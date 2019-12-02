@@ -1,37 +1,35 @@
-package dev.riska.Day01;
+package dev.riska.day01;
 
-import java.io.IOException;
+import dev.riska.Utils;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Day01 {
 
     private static final String FILENAME = "Day01Input.txt";
 
     public Day01() {
-        double answerPart1 = getInput().stream()
+        System.out.println("\n======== Day 01 ========");
+        System.out.printf("Answer part 1: %s\n", part1());
+        System.out.printf("Answer part 2: %s\n", part2());
+    }
+
+    private double part1() {
+        return Utils.getInput(FILENAME).stream()
                 .map(BigDecimal::new)
                 .map(this::calculate)
                 .map(BigDecimal::doubleValue)
                 .reduce(0d, Double::sum);
-        System.out.printf("Part 1: %s\n", answerPart1);
+    }
 
-        double answerPart2 = getInput().stream()
+    private double part2() {
+        return Utils.getInput(FILENAME).stream()
                 .map(BigDecimal::new)
                 .map(this::calculate)
                 .map(BigDecimal::doubleValue)
                 .map(this::calculatePart2)
                 .reduce(0d, Double::sum);
-        System.out.printf("Part 2: %s\n", answerPart2);
     }
 
     private double calculatePart2(double fuel) {
@@ -48,14 +46,5 @@ public class Day01 {
 
     private BigDecimal calculate(BigDecimal mass) {
         return mass.divide(new BigDecimal(3), RoundingMode.DOWN).subtract(new BigDecimal(2));
-    }
-
-    private List<String> getInput() {
-        try {
-            return Files.lines(Paths.get(ClassLoader.getSystemResource(FILENAME).toURI())).collect(Collectors.toList());
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
     }
 }
