@@ -2,11 +2,7 @@ package dev.riska.day03;
 
 import dev.riska.Utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // Shameless copy from /r/rowdyruski, but instead of loading puzzle input via system in I get it from a txt file in the resources.
@@ -14,7 +10,6 @@ public class Day03 {
 
     public static final String FILENAME1 = "Day03Input1.txt";
     public static final String FILENAME2 = "Day03Input2.txt";
-    public static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
     public Day03() {
         String[] input = Utils.getInput(FILENAME1).get(0).split(",");
