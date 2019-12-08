@@ -2,72 +2,75 @@ package dev.riska.day03;
 
 import dev.riska.Utils;
 
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+// Shameless copy from /r/rowdyruski, but instead of loading puzzle input via system in I get it from a txt file in the resources.
 public class Day03 {
 
     public static final String FILENAME1 = "Day03Input1.txt";
     public static final String FILENAME2 = "Day03Input2.txt";
-    public static final Map<String, Integer> DIR_X = new HashMap<>();
-    public static final Map<String, Integer> DIR_Y = new HashMap<>();
+    public static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
     public Day03() {
-        part1();
-    }
+        String[] input = Utils.getInput(FILENAME1).get(0).split(",");
 
+        Map<String, Integer> wire = new HashMap<>();
+        int closestDistance = Integer.MAX_VALUE;
+        int shortestWire = Integer.MAX_VALUE;
 
-    private void part1() {
-        setDirRules();
+        int x = 0, y = 0, d = 0;
 
-        List<String> wire1Dirs = getDirList(Utils.getInput(FILENAME1).get(0));
-        List<String> wire2Dirs = getDirList(Utils.getInput(FILENAME2).get(0));
-
-        Set<Integer> w1 = getPoints(wire1Dirs);
-        Set<Integer> w2 = getPoints(wire2Dirs);
-
-        Iterator<Integer> it1 = w1.iterator();
-        Iterator<Integer> it2 = w2.iterator();
-
-        int min;
-        while (it1.hasNext() && it2.hasNext()) {
-            int w1x =
-        }
-
-        both.stream().min(Integer::compareTo);
-    }
-
-    private Set<Integer> getPoints(List<String> wireDirs) {
-        int x = 0;
-        int y = 0;
-        Set<Integer> dirSet = new HashSet<>();
-        dirSet.add((x + y));
-        for (String s : wireDirs) {
-            String dir = String.valueOf(s.charAt(0));
-            int amount = Integer.parseInt(s.substring(1, s.length()));
-            for (int i = 0; i < amount; i++) {
-                x += DIR_X.get(dir);
-                y += DIR_Y.get(dir);
-                dirSet.add((x,y));
+        for (int i = 0; i < input.length; i++) {
+            int[] dir = getDir(input[i].charAt(0));
+            int len = Integer.parseInt(input[i].substring(1));
+            for (int j = 0; j < len; j++) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+                wire.put(newX + "_" + newY, ++d);
+                x = newX;
+                y = newY;
             }
         }
-        return dirSet;
+
+        input = Utils.getInput(FILENAME2).get(0).split(",");
+        x = y = d = 0;
+        for (int i = 0; i < input.length; i++) {
+            int[] dir = getDir(input[i].charAt(0));
+            int len = Integer.parseInt(input[i].substring(1));
+            for (int j = 0; j < len; j++) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+                d++;
+
+                if (wire.containsKey(newX + "_" + newY)) {
+                    closestDistance = Math.min(closestDistance, (int) Math.abs(x) + (int) Math.abs(newY));
+                    shortestWire = Math.min(shortestWire, wire.get(newX + "_" + newY) + d);
+                }
+
+                x = newX;
+                y = newY;
+            }
+        }
+
+        Utils.writeResults("03", String.valueOf(closestDistance), String.valueOf(shortestWire));
     }
 
-    private List<String> getDirList(String wire) {
-        return Stream.of(wire.split(",")).collect(Collectors.toList());
-    }
-
-    private void setDirRules() {
-        DIR_X.put("L", -1);
-        DIR_X.put("R", 1);
-        DIR_X.put("U", 0);
-        DIR_X.put("D", 0);
-        DIR_Y.put("L", 0);
-        DIR_Y.put("R", 0);
-        DIR_Y.put("U", 1);
-        DIR_Y.put("D", -1);
+    public static int[] getDir(char c) {
+        switch (c) {
+            case 'U':
+                return new int[]{0, 1};
+            case 'D':
+                return new int[]{0, -1};
+            case 'L':
+                return new int[]{-1, 0};
+            case 'R':
+                return new int[]{1, 0};
+        }
+        return null;
     }
 }

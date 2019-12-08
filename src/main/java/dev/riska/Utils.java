@@ -17,4 +17,12 @@ public class Utils {
         }
         return Collections.emptyList();
     }
+
+    public static void writeResults(String dayNr, String part1, String part2) {
+
+        System.out.printf("========== Day %s ==========\n", dayNr);
+        System.out.printf("Answer part 1: %s\n", part1);
+        System.out.printf("Answer part 2: %s\n", part2);
+        System.out.println("============================\n");
+    }
 }

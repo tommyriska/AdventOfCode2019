@@ -10,9 +10,7 @@ public class Day01 {
     private static final String FILENAME = "Day01Input.txt";
 
     public Day01() {
-        System.out.println("\n======== Day 01 ========");
-        System.out.printf("Answer part 1: %s\n", part1());
-        System.out.printf("Answer part 2: %s\n", part2());
+        Utils.writeResults("01", String.valueOf(part1()), String.valueOf(part2()));
     }
 
     private double part1() {
